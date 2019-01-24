@@ -11,16 +11,16 @@ body {
     border-radius: 12px;
     border-bottom: 7px solid darkgray;
     padding: 10px;
-    cursor:default;
+    cursor: default;
 }
 
-.row{
-    width:100%;
+.row {
+    width: 100%;
     margin: 6px 0;
-    display:table;
+    display: table;
 }
 
-#display{
+#display {
     text-align: right;
     font-size: x-large;
     font-family: monospace;
@@ -41,13 +41,13 @@ body {
     border-bottom: 2px solid bisque;
 }
 
-.key, #display{
+.key, #display {
     font-weight: bold;
     padding-top: 6px;
     padding-bottom: 4px;
 }
 
-#equal{
+#equal {
     background-color: sandybrown;
 }
 
