@@ -1,13 +1,8 @@
 function numEvent() {
-    if (secondOperand === '0')
-        secondOperand = '';
+    if (['0', '-0'].includes(secondOperand))
+        secondOperand = secondOperand.slice(0, -1);
 
     secondOperand += event.srcElement.textContent;
-}
-
-function zeroEvent() {
-    if (secondOperand !== '0')
-        secondOperand += '0';
 }
 
 function dotEvent() {
@@ -19,7 +14,7 @@ function operatorEvent() {
     let currentOp = event.srcElement.textContent;
 
     if (lastKey === 'operator' && currentOp === '-') {
-        secondOperand = '-';
+        secondOperand = '-0';
         update();
         return;
     }
@@ -34,8 +29,6 @@ function operatorEvent() {
 function calculate() {
     if (lastKey === 'operator')
         secondOperand = firstOperand;
-    else if (secondOperand === '-')
-        secondOperand += '0';
 
     let num1 = Number(firstOperand);
     let num2 = Number(secondOperand);
@@ -54,11 +47,11 @@ let pressedOperator;
 let lastKey;
 
 let operations = {
-    'none': (num1, num2) => num2,
     '/': (num1, num2) => num1 / num2,
     '*': (num1, num2) => num1 * num2,
     '-': (num1, num2) => num1 - num2,
-    '+': (num1, num2) => num1 + num2
+    '+': (num1, num2) => num1 + num2,
+    'none': (num1, num2) => num2
 };
 
 function init() {
@@ -97,7 +90,6 @@ window.onload = () => {
     let ops = document.querySelectorAll('.operator');
     [...ops].forEach(o => o.onclick = operatorEvent);
 
-    zero.onclick = () => events(zeroEvent);
     dot.onclick = () => events(dotEvent);
     equal.onclick = calculate;
 
