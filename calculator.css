@@ -51,7 +51,8 @@ body {
     background-color: sandybrown;
 }
 
-.key:hover {
-    box-shadow: 0 0 5px #38b361;
-    color: #38b361;
+.key:active {
+    box-shadow: 0 0 5px sandybrown;
+    color: bisque;
+    background-color: sandybrown;
 }
