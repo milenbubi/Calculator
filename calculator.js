@@ -1,8 +1,10 @@
+//</script><script type="text/babel">
+
 function numEvent() {
-    if ('-0'.includes(secondOperand))
+    if (['0', '-0'].includes(secondOperand))
         secondOperand = secondOperand.slice(0, -1);
 
-    secondOperand += last.Key();
+    secondOperand += event.srcElement.textContent;
 }
 
 function dotEvent() {
@@ -11,39 +13,42 @@ function dotEvent() {
 }
 
 function operatorEvent() {
-    if (last.Type === 'number')
-        calculate();
-    else if (last.Type === 'operator' && last.Key() === '-') {
+    let currentOp = event.srcElement.textContent;
+
+    if (lastKey === 'operator' && currentOp === '-'){
         secondOperand = '-0';
         update();
-        last.Type = 'negative';
         return;
     }
 
-    last.Type = 'operator';
-    last.Operator = last.Key();
+    else if (lastKey === 'number')
+        calculate();
+
+    pressedOperator = currentOp;
+    lastKey = 'operator';
 }
 
 function calculate() {
-    if (last.Type === 'operator')
+    if (lastKey === 'operator')
         secondOperand = firstOperand;
 
     let num1 = Number(firstOperand);
     let num2 = Number(secondOperand);
 
-    firstOperand = operations[last.Operator](num1, num2);
+    firstOperand = operations[pressedOperator](num1, num2);
     update(firstOperand);
 
-    last.Type = 'equal';
+    lastKey = 'equal';
 }
 
 // --------------------------------- //
 
 let firstOperand;
 let secondOperand;
-const last = {};
+let pressedOperator;
+let lastKey;
 
-const operations = {
+let operations = {
     '/': (num1, num2) => num1 / num2,
     '*': (num1, num2) => num1 * num2,
     '-': (num1, num2) => num1 - num2,
@@ -54,9 +59,8 @@ const operations = {
 function init() {
     firstOperand = '0';
     secondOperand = '0';
-    last.Type = 'number';
-    last.Operator = 'none';
-    last.Key = () => event.srcElement.textContent;
+    pressedOperator = 'none';
+    lastKey = 'number';
     update();
 }
 
@@ -65,18 +69,17 @@ function update(operand) {
         operand = secondOperand;
 
     display.textContent = operand.toString().slice(0, 12);
-    last.Type = 'number';
-    console.log(secondOperand);
+    lastKey = 'number';
 }
 
 function checkBeforeNumber() {
-    if (last.Type === 'equal')
+    if (lastKey === 'equal')
         init();
-    else if (last.Type === 'operator')
+    else if (lastKey === 'operator')
         secondOperand = '0';
 }
 
-const events = keyEvent => {
+let events = keyEvent => {
     checkBeforeNumber();
     keyEvent();
     update();
