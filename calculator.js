@@ -1,5 +1,3 @@
-//</script><script type="text/babel">
-
 function numEvent() {
     if (['0', '-0'].includes(secondOperand))
         secondOperand = secondOperand.slice(0, -1);
